@@ -3,13 +3,12 @@ import {
   auth,
   createUserDocFromAuth,
   signInWithGooglePopup,
-  signInUserWithEmailAndPassword
+  signInUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
-import {} from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input-component";
 import Button from "../button/button.component";
 
-import './sign-in-form.styles.scss';
+import "./sign-in-form.styles.scss";
 
 const defaultFormFields = {
   displayName: "",
@@ -24,15 +23,15 @@ const SignIn = () => {
 
   const enterAsGoogleUser = async () => {
     const { user } = await signInWithGooglePopup();
-    await createUserDocFromAuth(user);
+    
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await signInUserWithEmailAndPassword(email, password);
-      console.log(auth.currentUser);
-      resetFormFieds();
+      await signInUserWithEmailAndPassword(email, password).then(() => {
+        resetFormFieds();
+      });
     } catch (error) {
       alert("Erro no Cadastro");
       resetFormFieds();

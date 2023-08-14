@@ -4,11 +4,11 @@ import {
   createAuthUserWithEmailAndPassword,
   createUserDocFromAuth,
 } from "../../utils/firebase/firebase.utils";
-
+import { UserContext } from "../../contexts/user-context.component";
 import FormInput from "../form-input/form-input-component";
 import Button from "../button/button.component";
 
-import './sign-up-form.styles.scss';
+import "./sign-up-form.styles.scss";
 
 const defaultFormFields = {
   displayName: "",
@@ -32,20 +32,22 @@ const SignUp = () => {
         email,
         password
       );
-      if(auth.currentUser){
-        await createUserDocFromAuth(auth.currentUser, {displayName});
-        resetFormFieds();
+      if (auth.currentUser) {
+        await createUserDocFromAuth(auth.currentUser, { displayName }).then(
+          () => {
+            resetFormFieds();
+          }
+        );
       }
     } catch (error) {
       alert("Erro no Cadastro");
       console.log(error);
     }
-
   };
 
   const resetFormFieds = () => {
     setFormFields(defaultFormFields);
-  }
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -58,46 +60,46 @@ const SignUp = () => {
       <span>Cadastre-se com seu Email e Senha</span>
       <form onSubmit={handleSubmit}>
         <FormInput
-          label='Nome'
-          inputOptions = {{
-          required: true,
-          type:"text",
-          onChange: handleChange,
-          name:"displayName",
-          value:displayName
+          label="Nome"
+          inputOptions={{
+            required: true,
+            type: "text",
+            onChange: handleChange,
+            name: "displayName",
+            value: displayName,
           }}
         />
         <FormInput
-          label='Email'
-          inputOptions = {{
+          label="Email"
+          inputOptions={{
             required: true,
-            type:"email",
-            onChange:handleChange,
-            name:"email",
-            value:email
+            type: "email",
+            onChange: handleChange,
+            name: "email",
+            value: email,
           }}
         />
         <FormInput
-          label='Senha'
-          inputOptions = {{
+          label="Senha"
+          inputOptions={{
             required: true,
-            type:"password",
-            onChange:handleChange,
-            name:"password",
-            value:password
+            type: "password",
+            onChange: handleChange,
+            name: "password",
+            value: password,
           }}
         />
         <FormInput
-          label='Confirmar senha'
-          inputOptions = {{
+          label="Confirmar senha"
+          inputOptions={{
             required: true,
-            type:"password",
-            onChange:handleChange,
-            name:"confirmPassword",
-            value:confirmPassword
-          }}          
+            type: "password",
+            onChange: handleChange,
+            name: "confirmPassword",
+            value: confirmPassword,
+          }}
         />
-        <Button type='submit'>Cadastrar-se</Button>
+        <Button type="submit">Cadastrar-se</Button>
       </form>
     </div>
   );
