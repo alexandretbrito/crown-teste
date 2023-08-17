@@ -7,9 +7,18 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  writeBatch,
+  collection,
+  query,
+  getDocs
+} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -37,6 +46,41 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, g_provider);
 
 export const db = getFirestore();
+
+/** 
+ *  create bashes to fill and databese elements
+ *  USE ONLY ONE TIME!
+*/
+
+export const addCollectionsAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.log("done");
+};
+
+// Start database categories
+
+export const getCollectionsAndDocuments = async () => {
+  const collectionRef = collection(db, 'categories');
+  const q = query (collectionRef);
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((accum, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    accum[title.toLowerCase()] = items;
+    return accum
+  }, {});
+
+  return categoryMap;
+};
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
@@ -77,6 +121,9 @@ export const createUserDocFromAuth = async (
   return userDocRef;
 };
 
-export const userSignOut = async () => {await signOut(auth)};
+export const userSignOut = async () => {
+  await signOut(auth);
+};
 
-export const userAuthStateChangeListener = (callback) => onAuthStateChanged(auth, callback)
+export const userAuthStateChangeListener = (callback) =>
+  onAuthStateChanged(auth, callback);
