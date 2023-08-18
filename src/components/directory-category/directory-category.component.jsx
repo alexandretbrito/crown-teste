@@ -1,10 +1,10 @@
-import React from 'react'
-import './categoria.component.scss'
+import { Link } from 'react-router-dom';
+import './directory-category.component.scss'
 
-const Categorias = ({category}) => {
+const DirectoryCategory = ({category}) => {
     const {title, imageUrl} = category;
     return (
-      <div className="category-container">
+      <Link className="directory-category-container" to={`shop/${title}`}>
       <div className="background-image" style={{
         backgroundImage: `url(${imageUrl})`
       }}></div>
@@ -12,8 +12,8 @@ const Categorias = ({category}) => {
         <h2>{title}</h2>
         <p>SHOP NOW</p>
       </div>
-    </div>
+    </Link>
     )
   }
 
-export default Categorias
+export default DirectoryCategory

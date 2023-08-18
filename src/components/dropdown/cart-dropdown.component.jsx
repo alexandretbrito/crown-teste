@@ -6,7 +6,7 @@ import { CartContext } from '../../contexts/cart-context.component'
 import "./cart-dropdown.styles.scss"
 
 const DropDown = () => {
-  const { cartItems, isCartOpen, setIsCartOpen, } = useContext(CartContext)
+  const { cartItems, cartotal } = useContext(CartContext)
   const navigate = useNavigate()
 
   const goToCheckout = () => {
@@ -19,6 +19,9 @@ const DropDown = () => {
             {cartItems.map( item => (
               <CartItem key={item.id} cartItem={item}/>
             ))}
+        </div>
+        <div className='total'>
+        R$ {cartotal}
         </div>
       <Button onClick={goToCheckout}>IR PARA O CHECKOUT</Button>
     </div>
