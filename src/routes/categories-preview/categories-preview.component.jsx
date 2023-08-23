@@ -1,4 +1,4 @@
-import { useContext, Fragment } from "react";
+import { useContext } from "react";
 import { CategoryContext } from "../../contexts/category-context.components";
 import CategoryPreview from "../../components/category-preview/category-preview.component"
 import "../shop/shop.styles.scss";

@@ -4,7 +4,6 @@ import {
   createAuthUserWithEmailAndPassword,
   createUserDocFromAuth,
 } from "../../utils/firebase/firebase.utils";
-import { UserContext } from "../../contexts/user-context.component";
 import FormInput from "../form-input/form-input-component";
 import Button from "../button/button.component";
 
@@ -28,10 +27,10 @@ const SignUp = () => {
       return;
     }
     try {
-      const response = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
+        await createAuthUserWithEmailAndPassword(
+          email,
+          password
+        );
       if (auth.currentUser) {
         await createUserDocFromAuth(auth.currentUser, { displayName }).then(
           () => {

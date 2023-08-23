@@ -1,9 +1,9 @@
-import { useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Button from "../button/button.component"
-import CartItem from '../cart-item/cart-item.component'
-import { CartContext } from '../../contexts/cart-context.component'
-import "./cart-dropdown.styles.scss"
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Button from "../button/button.component";
+import CartItem from '../cart-item/cart-item.component';
+import { CartContext } from '../../contexts/cart-context.component';
+import { CartDropDownContainer, CartItems, CartTotal, EmptyMesssage } from './cart-dropdown.styles';
 
 const DropDown = () => {
   const { cartItems, cartotal } = useContext(CartContext)
@@ -14,17 +14,21 @@ const DropDown = () => {
   }
 
   return (
-    <div className='cart-dropdown-container'>
-        <div className='cart-items'>
-            {cartItems.map( item => (
+    <CartDropDownContainer>
+        <CartItems>
+          {cartItems.length ? 
+          (cartItems.map( item => (
               <CartItem key={item.id} cartItem={item}/>
-            ))}
-        </div>
-        <div className='total'>
-        R$ {cartotal}
-        </div>
+            )))
+          :    
+            (<EmptyMesssage>Carrinho vazio</EmptyMesssage>)
+          }         
+        </CartItems>
+        <CartTotal>
+          R$ {cartotal}
+        </CartTotal>
       <Button onClick={goToCheckout}>IR PARA O CHECKOUT</Button>
-    </div>
+    </CartDropDownContainer>
   )
 }
 
