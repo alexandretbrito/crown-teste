@@ -4,7 +4,7 @@ const selectCategoryReducer = (state) => state.categories;
 
 const selectCategories = createSelector(
   [selectCategoryReducer],
-  (categoriesSlicer) => categoriesSlicer.categories
+  (categoriesSlice) => categoriesSlice.categories
 );
 
 export const categoriesSelector = createSelector(
@@ -15,4 +15,9 @@ export const categoriesSelector = createSelector(
       accum[title.toLowerCase()] = items;
       return accum;
     }, {})
+);
+
+export const selectCategoriesIsLoading = createSelector(
+  [selectCategoryReducer],
+  (categoriesSlice) => categoriesSlice.isLoading
 );
