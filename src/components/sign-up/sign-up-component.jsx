@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   auth,
-  createAuthUserWithEmailAndPassword,
   createUserDocFromAuth,
 } from "../../utils/firebase/firebase.utils";
+import { signUpStart } from "../../store/user/user.actions";
 import FormInput from "../form-input/form-input-component";
 import Button from "../button/button.component";
 
@@ -17,6 +18,7 @@ const defaultFormFields = {
 };
 
 const SignUp = () => {
+  const dispatch = useDispatch();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
@@ -27,16 +29,9 @@ const SignUp = () => {
       return;
     }
     try {
-        await createAuthUserWithEmailAndPassword(
-          email,
-          password
-        );
+      dispatch(signUpStart(email, password, displayName));
       if (auth.currentUser) {
-        await createUserDocFromAuth(auth.currentUser, { displayName }).then(
-          () => {
-            resetFormFieds();
-          }
-        );
+          resetFormFieds();
       }
     } catch (error) {
       alert("Erro no Cadastro");

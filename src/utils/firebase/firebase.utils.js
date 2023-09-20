@@ -19,7 +19,6 @@ import {
   query,
   getDocs
 } from "firebase/firestore";
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAyUdA1vAtsBLouQSZqEs0mEv0GllA8FG8",
@@ -29,28 +28,24 @@ const firebaseConfig = {
   messagingSenderId: "411696922045",
   appId: "1:411696922045:web:97f2c8a58e1c2fb1e6e6d4",
 };
-
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
-
 // Google auth
 const g_provider = new GoogleAuthProvider();
-
 //Google auth provider
 g_provider.setCustomParameters({
   prompt: "select_account",
 });
-
+//
 export const auth = getAuth();
-
+//
 export const signInWithGooglePopup = () => signInWithPopup(auth, g_provider);
-
+//
 export const db = getFirestore();
 
 /** 
  *  create bashes to fill and databese elements
  *  USE ONLY ONE TIME!
-*/
 
 export const addCollectionsAndDocuments = async (
   collectionKey,
@@ -67,25 +62,26 @@ export const addCollectionsAndDocuments = async (
   console.log("done");
 };
 
+*/
 // Start database categories
-
+//
 export const getCollectionsAndDocuments = async () => {
   const collectionRef = collection(db, 'categories');
   const q = query (collectionRef);
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map(docSnapshot => docSnapshot.data());
 };
-
+//
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   await createUserWithEmailAndPassword(auth, email, password);
 };
-
+//
 export const signInUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   await signInWithEmailAndPassword(auth, email, password);
 };
-
+//
 export const createUserDocFromAuth = async (
   userAuth,
   additionalInformation = {}
@@ -112,12 +108,25 @@ export const createUserDocFromAuth = async (
       console.log(error.message);
     }
   }
-  return userDocRef;
+  return userSnapShot;
 };
-
+//
 export const userSignOut = async () => {
   await signOut(auth);
 };
-
+//
 export const userAuthStateChangeListener = (callback) =>
   onAuthStateChanged(auth, callback);
+//
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) =>{
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    )
+  })
+} 

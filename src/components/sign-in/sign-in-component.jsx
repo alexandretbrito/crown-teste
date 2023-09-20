@@ -1,8 +1,6 @@
 import { useState } from "react";
-import {
-  signInWithGooglePopup,
-  signInUserWithEmailAndPassword,
-} from "../../utils/firebase/firebase.utils";
+import { useDispatch } from "react-redux";
+import { emailSignInStart, googleSignInStart, signInWithEmail } from "../../store/user/user.actions";
 import FormInput from "../form-input/form-input-component";
 import Button, { BUTTON_TYPE_CLASS } from "../button/button.component";
 
@@ -16,19 +14,20 @@ const defaultFormFields = {
 };
 
 const SignIn = () => {
+  const dispatch = useDispatch();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
   const enterAsGoogleUser = async () => {
-    const { user } = await signInWithGooglePopup();
+    dispatch(googleSignInStart());
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await signInUserWithEmailAndPassword(email, password).then(() => {
+        dispatch(emailSignInStart(email, password))
         resetFormFieds();
-      });
+      
     } catch (error) {
       alert("Erro no Cadastro");
       resetFormFieds();
